@@ -3,6 +3,7 @@ from urllib.parse import urlparse
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.http import HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.views.generic import ListView, CreateView, DetailView, DeleteView, UpdateView, View
@@ -97,8 +98,9 @@ class PostLiked(View):
             # path('blog/like/<int:photo_id>/')
             # kwargs['photo_id']
             # 2. 누가?
-            if 'post_id; in kwargs':
-                post = kwargs['post_id']
+            if 'post_id' in kwargs:
+                post_id = kwargs['post_id']
+                post = Post.objects.get(pk=post_id)
                 user = request.user
                 if user in post.liked.all():
                     post.liked.remove(user)
@@ -124,10 +126,10 @@ class PostSaved(View):
                 post_id = kwargs['post_id']
                 post = Post.objects.get(pk=post_id)
                 user = request.user
-                if user in post.liked.all():
+                if user in post.saved.all():
                     post.liked.remove(user)
                 else:
-                    post.liked.add(user)
+                    post.saved.add(user)
             return HttpResponseRedirect('/')
 
 # signal

@@ -1,0 +1,43 @@
+{% extends 'layout.html' %}
+{% block title %}
+    Post List
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col"></div>
+    <div class="col-11 col-lg-7">
+        {% for object in object_list %}
+        <div class="card" style="margin-top:2em;">
+            <div class="card-header">
+                {{object.author.username}}
+            </div>
+            <img src="{{object.image.url}}" class="card-img-top">
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <a href="{% url 'post:liked' object.id %}" class="float-left btn-like {%if user in object.liked.all%}active{%endif%}">Liked</a>
+
+                    {% if object.liked.all.count %}
+                    <span class="float-left badge badge-danger" style="margin-left:0.5em;">
+                        {{object.liked.all.count}}
+                    </span>likes
+
+                    {% endif %}
+
+                    <a href="{% url 'post:saved' object.id %}"  class="float-right btn-save {%if user in object.saved.all%}active{%endif%}">Saved</a>
+                </li>
+            </ul>
+            {% if object.text %}
+            <div class="card-body">
+                <p class="card-text">{{object.text}}</p>
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <a href="{{object.get_absolute_url}}" class="card-link">Add a comment...</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col"></div>
+</div>
+{% endblock %}>

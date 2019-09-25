@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col"></div>
+    <div class="col-6">
+        <form action="" method="POST">
+            <div class="alert alert-info">Please enter your account information</div>
+            {% csrf_token %}
+
+            {{form.as_p}}
+            <!-- 모델 폼이용
+            <label>Username :<input type="text" name="username"></label>
+            <label>Password :<input type="password" name="password"></label>
+            <label>Repeate Password :<input type="password" name="password2"></label>
+            -->
+            <input type="submit" value="Sign up" class="btn btn-outline-info">
+        </form>
+    </div>
+    <div class="col"></div>
+</div>
+{% endblock %}
